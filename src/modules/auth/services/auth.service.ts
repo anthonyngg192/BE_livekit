@@ -24,10 +24,8 @@ export class AuthService {
     if (!user) {
       return null;
     }
-    const passwordHashed = CryptoJS.AES.encrypt(
-      password,
-      this.envService.ENVIRONMENT.JWT_SECRET_KEY,
-    ).toString();
+    const passwordHashed = CryptoJS.HmacSHA1(password, this.envService.ENVIRONMENT.JWT_SECRET_KEY).toString();
+    console.log(passwordHashed);
     return passwordHashed === user.password ? user : null;
   }
 
@@ -51,10 +49,7 @@ export class AuthService {
       throw new BadRequestException('Email existed');
     }
 
-    const passwordHashed = CryptoJS.AES.encrypt(
-      password,
-      this.envService.ENVIRONMENT.JWT_SECRET_KEY,
-    ).toString();
+    const passwordHashed = CryptoJS.HmacSHA1(password, this.envService.ENVIRONMENT.JWT_SECRET_KEY).toString();
 
     await this.userService.createUser({ email, password: passwordHashed });
   }
