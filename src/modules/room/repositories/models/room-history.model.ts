@@ -6,7 +6,7 @@ import { BaseModel } from 'src/common/base/model/base.model';
 
 export type RoomHistoryDoc = RoomHistoryModel & Document;
 
-@Schema({ collection: 'RoomHistories', versionKey: false })
+@Schema({ collection: 'roomHistories', versionKey: false })
 export class RoomHistoryModel extends BaseModel {
   @ApiProperty()
   @IsString()
