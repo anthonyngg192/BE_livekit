@@ -5,9 +5,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseName } from 'src/common/base/constants';
 import { RouterModule } from 'src/router/router.module';
 import { JobsModule } from 'src/job/job.module';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
   imports: [
+    CommonModule.forRoot(),
+    EnvironmentModule.register({
+      provide: AppEnvironmentService,
+      useValue: new AppEnvironmentService(),
+    }),
     MongooseModule.forRootAsync({
       useFactory: async (envService: AppEnvironmentService) => ({
         uri: envService.ENVIRONMENT.DB_CONNECTION,
@@ -16,10 +22,6 @@ import { JobsModule } from 'src/job/job.module';
       }),
       connectionName: DatabaseName.BINANCE,
       inject: [AppEnvironmentService],
-    }),
-    EnvironmentModule.register({
-      provide: AppEnvironmentService,
-      useValue: new AppEnvironmentService(),
     }),
 
     //Router
